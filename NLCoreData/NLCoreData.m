@@ -157,7 +157,7 @@
     } else if([[NSUserDefaults standardUserDefaults] objectForKey:dbPath]){
         self.filePath = [[NSUserDefaults standardUserDefaults] objectForKey:dbPath];
         return self.filePath;
-    }        
+    }
     
 	NSArray* paths			= NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES);
 	NSString* pathComponent = [[self modelName] stringByAppendingString:@".sqlite"];
@@ -167,8 +167,8 @@
 
 - (NSURL *)storeURL
 {
-    if (self.filePath)
-        return [[NSURL alloc] initFileURLWithPath:self.filePath];
+    if ([self storePath])
+        return [[NSURL alloc] initFileURLWithPath:[self storePath]];
     
 	NSArray* urls			= [[NSFileManager defaultManager] URLsForDirectory:NSLibraryDirectory inDomains:NSUserDomainMask];
 	NSString* pathComponent	= [[self modelName] stringByAppendingString:@".sqlite"];
