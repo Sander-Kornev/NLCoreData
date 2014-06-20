@@ -29,6 +29,8 @@
 
 - (void)addPersistentStore;
 
+@property (strong, nonatomic) NSString *filePath;
+
 @end
 
 @implementation NLCoreData
@@ -66,7 +68,19 @@
 	}
 }
 
-- (BOOL)resetDatabase
+- (void)useDatabaseFileAtPath:(NSString *)filePath
+{
+    if (![[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
+#ifdef DEBUG
+		[NSException raise:NLCoreDataExceptions.fileExist format:@"%@", filePath];
+#endif
+		return;
+	}
+    
+    self.filePath = filePath;
+}
+
+- (BOOL)resetDatabaseDeleteDB:(BOOL)isDelete
 {
 	NSArray* stores = [[self storeCoordinator] persistentStores];
 	
@@ -89,7 +103,7 @@
 	if (![fm fileExistsAtPath:storePath])
 		return YES;
 	
-	if (![fm removeItemAtPath:storePath error:&fileError]) {
+	if (isDelete && ![fm removeItemAtPath:storePath error:&fileError]) {
 #ifdef DEBUG
 		[NSException raise:@"" format:@"%@", fileError];
 #endif
@@ -135,6 +149,9 @@
 
 - (NSString *)storePath
 {
+    if (self.filePath)
+        return self.filePath;
+    
 	NSArray* paths			= NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES);
 	NSString* pathComponent = [[self modelName] stringByAppendingString:@".sqlite"];
 	
@@ -143,6 +160,9 @@
 
 - (NSURL *)storeURL
 {
+    if (self.filePath)
+        return [NSURL URLWithString:self.filePath];
+    
 	NSArray* urls			= [[NSFileManager defaultManager] URLsForDirectory:NSLibraryDirectory inDomains:NSUserDomainMask];
 	NSString* pathComponent	= [[self modelName] stringByAppendingString:@".sqlite"];
 	

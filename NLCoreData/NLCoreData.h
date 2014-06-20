@@ -108,10 +108,20 @@ NSManagedObjectContext;
 
 /**
  @name Lifecycle
- @return A boolean on whether or not the operation succeeded.
- Resets the database (deletes all content).
- @warning If you use this, be sure to drop all references to managed objects beforehand.
+ Set up a preseeded database file to be used as your Core Data store.
+ The filetype should be sqlite and it should conform to your model.
+ @param filePath Path to the preseeded file.
+ @warning This should be called before using Core Data on first run.
  */
-- (BOOL)resetDatabase;
+- (void)useDatabaseFileAtPath:(NSString *)filePath;
+
+/**
+ @name Lifecycle
+ @return A boolean on whether or not the operation succeeded.
+ Resets the database (deletes all persistent stores and clears contexts).
+ @param isDelete A boolean on whether or not the previous store should be deleted.
+ @warning If you use this, be sure to drop all references to managed objects beforehand and save all data.
+ */
+- (BOOL)resetDatabaseDeleteDB:(BOOL)isDelete;
 
 @end
