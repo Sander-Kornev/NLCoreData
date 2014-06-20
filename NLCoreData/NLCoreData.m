@@ -161,7 +161,7 @@
 - (NSURL *)storeURL
 {
     if (self.filePath)
-        return [NSURL URLWithString:self.filePath];
+        return [[NSURL alloc] initFileURLWithPath:self.filePath];
     
 	NSArray* urls			= [[NSFileManager defaultManager] URLsForDirectory:NSLibraryDirectory inDomains:NSUserDomainMask];
 	NSString* pathComponent	= [[self modelName] stringByAppendingString:@".sqlite"];
