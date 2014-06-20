@@ -25,6 +25,8 @@
 #import <CoreData/CoreData.h>
 #import "NLCoreData.h"
 
+#define dbPath @"NLCoreDataDBPath"
+
 @interface NLCoreData ()
 
 - (void)addPersistentStore;
@@ -78,6 +80,7 @@
 	}
     
     self.filePath = filePath;
+    [[NSUserDefaults standardUserDefaults] setObject:filePath forKey:dbPath];
 }
 
 - (BOOL)resetDatabaseDeleteDB:(BOOL)isDelete
@@ -149,8 +152,12 @@
 
 - (NSString *)storePath
 {
-    if (self.filePath)
+    if (self.filePath){
         return self.filePath;
+    } else if([[NSUserDefaults standardUserDefaults] objectForKey:dbPath]){
+        self.filePath = [[NSUserDefaults standardUserDefaults] objectForKey:dbPath];
+        return self.filePath;
+    }        
     
 	NSArray* paths			= NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES);
 	NSString* pathComponent = [[self modelName] stringByAppendingString:@".sqlite"];
