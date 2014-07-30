@@ -111,9 +111,10 @@ NSManagedObjectContext;
  Set up a preseeded database file to be used as your Core Data store.
  The filetype should be sqlite and it should conform to your model.
  @param filePath Path to the preseeded file.
+ @param isExist The Value that shows whether DB exists at filePath or should be created later
  @warning This should be called before using Core Data on first run.
  */
-- (void)useDatabaseFileAtPath:(NSString *)filePath;
+- (void)useDatabaseFileAtPath:(NSString *)filePath isDBAlreadyExist:(BOOL)isExist;
 
 /**
  @name Lifecycle

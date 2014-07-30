@@ -70,9 +70,9 @@
 	}
 }
 
-- (void)useDatabaseFileAtPath:(NSString *)filePath
+- (void)useDatabaseFileAtPath:(NSString *)filePath isDBAlreadyExist:(BOOL)isExist
 {
-    if (![[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
+    if (isExist && ![[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
 #ifdef DEBUG
 		[NSException raise:NLCoreDataExceptions.fileExist format:@"%@", filePath];
 #endif
